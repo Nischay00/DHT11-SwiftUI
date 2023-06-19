@@ -19,19 +19,34 @@ struct ContentView: View {
            UINavigationBar.appearance().scrollEdgeAppearance = appearance
        }
     var body: some View {
-        NavigationView {
-            VStack{
-                // Function call for Show progress view
-                CircularProgressView().padding(.top,50).padding(.bottom,40)
-                // Title of the app
-                    .navigationBarTitle("SWEETG GARLIC" , displayMode: .large)
-                // ImageView
-                ImageSlider()
-                    .tabViewStyle(PageTabViewStyle()).edgesIgnoringSafeArea(.all).indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+        GeometryReader { geometry in
+            NavigationView {
+                VStack(spacing: 0) {
+                    VStack {
+                        Text("SWEETG GARLIC")
+                            .font(.largeTitle)
+                            .padding(.bottom, 40)
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    CircularProgressView()
+                        .padding(.vertical, 50)
+                    
+                    ImageSlider()
+                        .tabViewStyle(PageTabViewStyle())
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
+                        .aspectRatio(contentMode: .fill)
+                        .edgesIgnoringSafeArea(.all)
+                }
+                .navigationBarTitle("SWEETG GARLIC", displayMode: .large)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
             }
+            .navigationViewStyle(StackNavigationViewStyle())
         }
-       .navigationViewStyle(StackNavigationViewStyle())
+       
     }
+
 }
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

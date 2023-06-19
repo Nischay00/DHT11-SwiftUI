@@ -13,22 +13,28 @@ struct ImageSlider: View {
     @State private var selection = 0
     
     var body: some View {
-        TabView(selection: $selection) {
-            ForEach(0..<3) { i in
-                         //3
-                         Image("\(images[i])")
-                            .resizable().cornerRadius(50)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity).edgesIgnoringSafeArea(.all).shadow(color: .black ,radius: 5)
-                            .onReceive(timer, perform: {_ in
-                                withAnimation{
+            GeometryReader { geometry in
+                TabView(selection: $selection) {
+                    ForEach(0..<3) { i in
+                        Image("\(images[i])")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .cornerRadius(50)
+                            .shadow(color: .black, radius: 5)
+                            .onReceive(timer, perform: { _ in
+                                withAnimation {
                                     selection = selection < 3 ? selection + 1 : 0
                                 }
-                                
                             })
                     }
-                }        
+                }
+                .tabViewStyle(PageTabViewStyle())
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+            }
+            .edgesIgnoringSafeArea(.all)
+        }
     }
-}
 
 struct ImageSlider_Previews: PreviewProvider {
     static var previews: some View {
